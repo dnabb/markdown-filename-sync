@@ -4,7 +4,7 @@
   "description": "A VS Code extension that syncs the filename of a markdown file with its first header.",
   "publisher": "danabb",
   "homepage": "https://github.com/dnabb/markdown-filename-sync",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.84.0"
   },

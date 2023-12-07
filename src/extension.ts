@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 export async function activate(context: vscode.ExtensionContext) {
-    const Slugger = (await import('github-slugger')).default;
+    const Slugger = require('github-slugger');
     const slugger = new Slugger();
     const UNALLOWED_CHARS = '/\\\\#%&{}<>?*$!\'":@+`|=';
     const UNALLOWED_REGEX = new RegExp(`[${UNALLOWED_CHARS}]`, 'g');

@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 
 export async function activate(context: vscode.ExtensionContext) {
     const Slugger = require('github-slugger');
@@ -24,6 +25,39 @@ export async function activate(context: vscode.ExtensionContext) {
                     const fileUri = document.uri;
                     const newFileUri = vscode.Uri.file(fileUri.fsPath.replace(/[^\/\\]*$/, `${filename}.md`));
                     await vscode.workspace.fs.rename(fileUri, newFileUri);
+
+                    const renameRelatedFiles = vscode.workspace.getConfiguration('markdown-filename-sync').get('renameRelatedFiles');
+                    const relatedFileExtensions: string[] = vscode.workspace.getConfiguration('markdown-filename-sync').get('relatedFileExtensions') as string[];
+
+                    if (renameRelatedFiles) {
+                        // Get the directory of the current file
+                        const dir = path.dirname(newFileUri.fsPath);
+
+                        // Get all files in the directory
+                        const files = await vscode.workspace.fs.readDirectory(vscode.Uri.file(dir));
+
+                        // Loop through the files
+                        for (const [file, type] of files) {
+                            // If the file is not a directory, starts with the old filename, and has a related file extension
+                            if (type === vscode.FileType.File && file.startsWith(path.basename(document.fileName, '.md')) && relatedFileExtensions.includes(path.extname(file))) {
+                                // Construct the new filename
+                                const newFilename = file.replace(path.basename(document.fileName, '.md'), filename);
+
+                                // Rename the file
+                                const oldFileUri = vscode.Uri.file(path.join(dir, file));
+                                const newFileUri = vscode.Uri.file(path.join(dir, newFilename));
+                                await vscode.workspace.fs.rename(oldFileUri, newFileUri);
+                            }
+                        }
+
+                        // Update the links in the markdown file
+                        const text = (await vscode.workspace.openTextDocument(newFileUri)).getText();
+                        const updatedText = text.replace(new RegExp(path.basename(document.fileName, '.md'), 'g'), filename);
+                        const edit = new vscode.WorkspaceEdit();
+                        edit.replace(newFileUri, new vscode.Range(new vscode.Position(0, 0), new vscode.Position(text.length, 0)), updatedText);
+                        await vscode.workspace.applyEdit(edit);
+                    }
+
                 } else {
                     vscode.window.showErrorMessage('No markdown header found in the file.');
                 }

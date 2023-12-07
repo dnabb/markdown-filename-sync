@@ -49,6 +49,23 @@
             "Slugify header"
           ],
           "description": "Choose the behavior for renaming markdown files"
+        },
+        "markdown-filename-sync.renameRelatedFiles": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to rename related files when renaming a markdown file"
+        },
+        "markdown-filename-sync.relatedFileExtensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            ".png",
+            ".jpg",
+            ".html"
+          ],
+          "description": "List of file extensions to be considered as related files"
         }
       }
     }

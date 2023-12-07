@@ -18,9 +18,3 @@ Possible options:
 ## Known Issues
 
 Links pointing to the renamed markdown file will not be updated.
-
-## Release Notes
-
-### 0.0.1
-
-Initial release, largely generated with ChatGPT. Use at your own risk.

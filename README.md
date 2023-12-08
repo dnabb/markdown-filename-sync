@@ -18,7 +18,8 @@ Possible options:
 - `slugify`: Use slug (from [github-slugger](https://github.com/Flet/github-slugger)) as file name.
 
 `markdown-filename-sync.renameRelatedFiles`: whether or not *related files* (files whose name begins with the same name of the current markdown file) should also be renamed.  
-`markdown-filename-sync.relatedFileExtensions` which extensions to consider related to the current file.
+
+`markdown-filename-sync.relatedFileExtensions`: which extensions to consider related to the current file.
 
 ## Known Issues
 

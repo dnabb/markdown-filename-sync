@@ -50,7 +50,8 @@ export async function activate(context: vscode.ExtensionContext) {
                             }
                         }
 
-                        // Update the links in the markdown file
+                        // Updates whenever the old filenames were mentioned in the markdown.
+                        // This effectively also updates the links
                         const text = (await vscode.workspace.openTextDocument(newFileUri)).getText();
                         const updatedText = text.replace(new RegExp(path.basename(document.fileName, '.md'), 'g'), filename);
                         const edit = new vscode.WorkspaceEdit();

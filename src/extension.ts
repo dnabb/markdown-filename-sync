@@ -53,12 +53,15 @@ export async function activate(context: vscode.ExtensionContext) {
                         // Updates whenever the old filenames were mentioned in the markdown.
                         // This effectively also updates the links
                         const text = (await vscode.workspace.openTextDocument(newFileUri)).getText();
-                        const updatedText = text.replace(new RegExp(path.basename(document.fileName, '.md'), 'g'), filename);
-                        const edit = new vscode.WorkspaceEdit();
-                        edit.replace(newFileUri, new vscode.Range(new vscode.Position(0, 0), new vscode.Position(text.length, 0)), updatedText);
-                        await vscode.workspace.applyEdit(edit);
-                    }
 
+                        // Check if the old filename is part of a markdown header
+                        if (!firstHeader[0].includes(path.basename(document.fileName, '.md'))) {
+                            const updatedText = text.replace(new RegExp(path.basename(document.fileName, '.md'), 'g'), filename);
+                            const edit = new vscode.WorkspaceEdit();
+                            edit.replace(newFileUri, new vscode.Range(new vscode.Position(0, 0), new vscode.Position(text.length, 0)), updatedText);
+                            await vscode.workspace.applyEdit(edit);
+                        }
+                    }
                 } else {
                     vscode.window.showErrorMessage('No markdown header found in the file.');
                 }
@@ -70,3 +73,4 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {}
+

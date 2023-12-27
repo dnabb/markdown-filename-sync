@@ -9,3 +9,7 @@ Initial release.
 
 ## 0.0.4
 - Added functionality for renaming related files
+
+## 0.1.0
+- First beta version
+- Renaming related files should now leave the first header untouched
